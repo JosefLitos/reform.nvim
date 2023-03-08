@@ -17,13 +17,15 @@ static char *lua_code_fmt(const char *doc, char *fmt, int *docStart, char stop) 
 		switch (doc[i]) {
 			case '"': // string "..."
 				*fmt++ = doc[i];
-				while (doc[++i] != '"') *fmt++ = doc[i];
-				*fmt++ = doc[i];
+				while (doc[++i] != '"' && doc[i] != '\n') *fmt++ = doc[i];
+				if (doc[i] == '\n') i--;
+				else *fmt++ = doc[i];
 				break;
 			case '\'': // string '...'
 				*fmt++ = doc[i];
-				while (doc[++i] != '\'') *fmt++ = doc[i];
-				*fmt++ = doc[i];
+				while (doc[++i] != '\'' && doc[i] != '\n') *fmt++ = doc[i];
+				if (doc[i] == '\n') i--;
+				else *fmt++ = doc[i];
 				break;
 			case '[': // string [[...]]
 				*fmt++ = doc[i];
